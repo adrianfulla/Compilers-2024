@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <string>
 #include "y.tab.h"
+#include <iostream>
 %}
 
 %%
@@ -15,7 +16,8 @@
 "="                     { return '='; }
 ":"                     { return ':'; }
 [ \t]                   ;  // skip whitespace
-.|\n                    ; /* ignore all the rest */
+\n                      ; /* skip whitespace */
+.                       { std::cout << "Carácter invalido: " << yytext << std::endl; return 0; }
 
 %%
 
