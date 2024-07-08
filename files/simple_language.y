@@ -15,8 +15,8 @@ int yylex();
 %type<num> assignment
 
 %right '='
-%left '+' '-'
 %left '*' '/'
+%left '+' '-'
 
 %%
 
@@ -41,10 +41,10 @@ assignment: ID '=' expression
 
 expression: NUMBER                  { $$ = $1; }
     | ID                            { $$ = vars[*$1];      delete $1; }
+    | expression '/' expression     { $$ = $1 / $3; }
+    | expression '*' expression     { $$ = $1 * $3; }
     | expression '+' expression     { $$ = $1 + $3; }
     | expression '-' expression     { $$ = $1 - $3; }
-    | expression '*' expression     { $$ = $1 * $3; }
-    | expression '/' expression     { $$ = $1 / $3; }
     ;
 
 %%
