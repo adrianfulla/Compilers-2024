@@ -7,13 +7,20 @@ stat:   expr NEWLINE                 # printExpr
     |   NEWLINE                      # blank
     ;
 
-expr:   expr ('*'|'/') expr          # MulDiv
-    |   expr ('+'|'-') expr          # AddSub
-    |   INT                          # int
-    |   ID                           # id
-    |   '(' expr ')'                 # parens
+expr:   expr ('==' | '!=' | '<' | '>' | '<=' | '>=') expr   # Compare
+    |   expr ('*'|'/') expr                                 # MulDiv
+    |   expr ('+'|'-') expr                                 # AddSub
+    |   INT                                                 # int
+    |   ID                                                  # id
+    |   '(' expr ')'                                        # parens
     ;
 
+EQ:     '==';
+NEQ:    '!=';
+LT:     '<';
+GT:     '>';
+LE:     '<=';
+GE:     '>=';
 MUL : '*' ; // define token for multiplication
 DIV : '/' ; // define token for division
 ADD : '+' ; // define token for addition
