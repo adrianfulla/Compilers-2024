@@ -20,3 +20,12 @@
 # Go workspace file
 go.work
 go.work.sum
+program/__pycache__/MiniLangParser.cpython-310.pyc
+program/__pycache__/MiniLangLexer.cpython-310.pyc
+program/MiniLangParser.py
+program/MiniLangListener.py
+program/MiniLangLexer.tokens
+program/MiniLangLexer.py
+program/MiniLangLexer.interp
+program/MiniLang.tokens
+program/MiniLang.interp
