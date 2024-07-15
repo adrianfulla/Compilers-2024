@@ -62,6 +62,7 @@ RUN chmod +x ./python-venv.sh
 RUN ./python-venv.sh
 
 COPY requirements.txt .
+COPY Actividades ./Actividades
 # Not production-intended, never do this, this is just a simple example
 # RUN pip install -r requirements.txt --break-system-packages 
 RUN pip install -r requirements.txt
