@@ -15,6 +15,7 @@ expr:   expr ('==' | '!=' | '<' | '>' | '<=' | '>=') expr   # Compare
     |   expr ('*'|'/') expr                                 # MulDiv
     |   expr ('+'|'-') expr                                 # AddSub
     |   INT                                                 # int
+    |   STRING                                              # string
     |   ID                                                  # id
     |   '(' expr ')'                                        # parens
     ;
@@ -25,6 +26,7 @@ LT:     '<';
 GT:     '>';
 LE:     '<=';
 GE:     '>=';
+STRING : '"' (~["\r\n])* '"' ;
 MUL : '*' ; // define token for multiplication
 DIV : '/' ; // define token for division
 ADD : '+' ; // define token for addition
