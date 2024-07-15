@@ -2,10 +2,14 @@ grammar MiniLang;
 
 prog:   stat+ ;
 
-stat:   expr NEWLINE                 # printExpr
-    |   ID '=' expr NEWLINE          # assign
-    |   NEWLINE                      # blank
+stat:   expr NEWLINE                                                    # printExpr
+    |   ID '=' expr NEWLINE                                             # assign
+    |   'if' expr 'then' block ('else' block)? 'endif'                    # ifElse
+    |   'while' expr 'do' block 'endwhile'                                # whileLoop
+    |   NEWLINE                                                          # blank
     ;
+
+block:  (stat | NEWLINE)*;
 
 expr:   expr ('==' | '!=' | '<' | '>' | '<=' | '>=') expr   # Compare
     |   expr ('*'|'/') expr                                 # MulDiv
