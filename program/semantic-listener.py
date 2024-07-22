@@ -34,6 +34,54 @@ class ConfRoomSchedulerSemanticChecker(ConfRoomSchedulerListener):
             self.validateOverlapReservation(ctx=ctx, dates=dates)
         except:
             pass
+        
+    def enterReprogramStat(self, ctx):
+    # Obtener los datos de la reprogramación
+        room_id = ctx.getChild(0).ID().getText()
+        original_date = ctx.getChild(0).DATE(0).getText()
+        original_start_time = ctx.getChild(0).TIME(0).getText()
+        original_end_time = ctx.getChild(0).TIME(1).getText()
+        new_date = ctx.getChild(0).DATE(1).getText() if len(ctx.getChild(0).DATE()) > 1 else original_date
+        new_start_time = ctx.getChild(0).TIME(2).getText()
+        new_end_time = ctx.getChild(0).TIME(3).getText()
+
+        # Buscar la reserva original
+        original_res = None
+        for res in self.reservations:
+            if (res.room_id == room_id and
+                res.date.strftime('%d/%m/%Y') == original_date and
+                res.start_time.strftime('%H:%M') == original_start_time and
+                res.end_time.strftime('%H:%M') == original_end_time):
+                original_res = res
+                break
+
+        if not original_res:
+            print("No se encontró la reserva original para reprogramar.")
+            return
+
+        try:
+            new_date_obj = datetime.datetime.strptime(new_date, '%d/%m/%Y')
+            new_start_time_obj = datetime.datetime.strptime(new_start_time, '%H:%M')
+            new_end_time_obj = datetime.datetime.strptime(new_end_time, '%H:%M')
+
+            if new_start_time_obj >= new_end_time_obj:
+                print(f"Error: La nueva hora de inicio debe ser anterior a la nueva hora de fin.")
+                return
+
+            new_reservation = Reservation(room_id, new_date_obj, new_start_time_obj, new_end_time_obj)
+            for res in self.reservations:
+                if res != original_res and res.overlaps_with(new_reservation):
+                    print(f"Error: La nueva reserva de {room_id} está solapada con otra existente.")
+                    return
+
+            original_res.date = new_date_obj
+            original_res.start_time = new_start_time_obj
+            original_res.end_time = new_end_time_obj
+            print(f"Reserva de {room_id} reprogramada para {new_date} de {new_start_time} a {new_end_time} correctamente.")
+
+        except ValueError as e:
+            print(f"Error en la entrada de fecha o tiempo: {str(e)}")
+
     
     def validateDateAndTime(self,ctx):
         try:
