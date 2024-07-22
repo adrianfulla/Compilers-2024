@@ -22,3 +22,12 @@ go.work
 go.work.sum
 program/.DS_Store
 .DS_Store
+program/__pycache__/ConfRoomSchedulerLexer.cpython-310.pyc
+program/__pycache__/ConfRoomSchedulerParser.cpython-310.pyc
+program/ConfRoomScheduler.interp
+program/ConfRoomScheduler.tokens
+program/ConfRoomSchedulerParser.py
+program/ConfRoomSchedulerListener.py
+program/ConfRoomSchedulerLexer.py
+program/ConfRoomSchedulerLexer.tokens
+program/ConfRoomSchedulerLexer.interp
