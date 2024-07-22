@@ -7,7 +7,7 @@ from ConfRoomSchedulerListener import ConfRoomSchedulerListener
 
 
 class Reservation:
-    def __init__(self, room_id, date, start_time, end_time):
+    def __init__(self, room_id, date, start_time, end_time, name=None):
         self.room_id = room_id
         self.date = date
         self.start_time = start_time
@@ -22,6 +22,10 @@ class Reservation:
 
     def check_max_hours(self):
         return (self.end_time - self.start_time).seconds / 3600 < self.max_hours
+    
+    def __str__(self):
+        name_str = f" por {self.name}" if self.name else ""
+        return f"Reserva de {self.room_id} para {self.date.strftime('%d/%m/%Y')} de {self.start_time.strftime('%H:%M')} a {self.end_time.strftime('%H:%M')}{name_str}"
 
 class ConfRoomSchedulerSemanticChecker(ConfRoomSchedulerListener):
     def __init__(self):
@@ -113,6 +117,17 @@ class ConfRoomSchedulerSemanticChecker(ConfRoomSchedulerListener):
             return
         self.reservations.append(new_reservation)
         print(f"Reserva agregada correctamente para el salón {child.getText()}.")
+
+    def enterListarStat(self, ctx):
+        self.list_reservations()
+
+    def list_reservations(self):
+        if not self.reservations:
+            print("No hay reservas existentes.")
+        else:
+            print("Reservas existentes:")
+            for reservation in self.reservations:
+                print(reservation)
 
     
     

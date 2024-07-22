@@ -5,6 +5,7 @@ prog: stat+ ;
 stat: reserve NEWLINE                # reserveStat
     | cancel NEWLINE                 # cancelStat
     | reprogram NEWLINE              # reprogramStat
+    | 'LISTAR' NEWLINE                 # listarStat
     | NEWLINE                        # blank
     ;
 
