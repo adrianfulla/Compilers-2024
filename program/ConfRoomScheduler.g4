@@ -4,6 +4,7 @@ prog: stat+ ;
 
 stat: reserve NEWLINE                # reserveStat
     | cancel NEWLINE                 # cancelStat
+    | reprogram NEWLINE              # reprogramStat
     | NEWLINE                        # blank
     ;
 
@@ -11,6 +12,8 @@ reserve: 'RESERVAR' ID 'PARA' DATE 'DE' TIME 'A' TIME ('POR' NAME)? ('COMO' type
         ; 
 
 cancel: 'CANCELAR' ID 'PARA' DATE 'DE' TIME 'A' TIME ; 
+
+reprogram: 'REPROGRAMAR' ID 'EN' DATE 'DE' TIME 'A' TIME 'PARA' (DATE 'DE')? TIME 'A' TIME ;
 
 type:   'JUNTAS' 
     |   'CAPACITACION'
