@@ -86,6 +86,35 @@ class ConfRoomSchedulerSemanticChecker(ConfRoomSchedulerListener):
         except ValueError as e:
             print(f"Error en la entrada de fecha o tiempo: {str(e)}")
 
+    def enterCancelStat(self, ctx):
+    # Obtener los datos de la reprogramación
+        room_id = ctx.getChild(0).ID().getText()
+        date = ctx.getChild(0).DATE(0).getText()
+        start_time = ctx.getChild(0).TIME(0).getText()
+        end_time = ctx.getChild(0).TIME(1).getText()
+
+        # Buscar la reserva original
+        original_res = None
+        for res in self.reservations:
+            if (res.room_id == room_id and
+                res.date.strftime('%d/%m/%Y') == date and
+                res.start_time.strftime('%H:%M') == start_time and
+                res.end_time.strftime('%H:%M') == end_time):
+                original_res = res
+                break
+
+        if not original_res:
+            print("No se encontró la reserva para cancelar.")
+            return
+
+        try:
+            # Eliminar la reserva
+            self.reservations.remove(original_res)
+            print(f"Reserva de {room_id} para {date} de {start_time} a {end_time} cancelada correctamente.")
+        
+        except ValueError as e:
+            print(f"Error en la entrada de fecha o tiempo: {str(e)}")
+
     
     def validateDateAndTime(self,ctx):
         try:
