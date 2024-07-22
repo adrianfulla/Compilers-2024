@@ -12,11 +12,17 @@ class Reservation:
         self.date = date
         self.start_time = start_time
         self.end_time = end_time
+        self.max_hours = 2
+
 
     def overlaps_with(self, other):
         if self.room_id == other.room_id and self.date == other.date:
             return self.start_time < other.end_time and self.end_time > other.start_time
         return False
+
+    def check_max_hours(self):
+        return (self.end_time - self.start_time).seconds / 3600 < self.max_hours
+
 class ConfRoomSchedulerSemanticChecker(ConfRoomSchedulerListener):
     def __init__(self):
         self.reservations = []
@@ -54,6 +60,9 @@ class ConfRoomSchedulerSemanticChecker(ConfRoomSchedulerListener):
             if reservation.overlaps_with(new_reservation):
                 print(f"Error: La reserva para el salón {child.getText()} está solapada con otra reserva.")
                 return 
+        if not new_reservation.check_max_hours():
+            print(f"Error: La reserva para el salón {child.getText()} excede el máximo de horas permitido.")
+            return
         self.reservations.append(new_reservation)
         print(f"Reserva agregada correctamente para el salón {child.getText()}.")
 
