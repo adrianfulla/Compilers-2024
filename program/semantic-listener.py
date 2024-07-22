@@ -5,11 +5,27 @@ from ConfRoomSchedulerLexer import ConfRoomSchedulerLexer
 from ConfRoomSchedulerParser import ConfRoomSchedulerParser
 from ConfRoomSchedulerListener import ConfRoomSchedulerListener
 
+
+class Reservation:
+    def __init__(self, room_id, date, start_time, end_time):
+        self.room_id = room_id
+        self.date = date
+        self.start_time = start_time
+        self.end_time = end_time
+
+    def overlaps_with(self, other):
+        if self.room_id == other.room_id and self.date == other.date:
+            return self.start_time < other.end_time and self.end_time > other.start_time
+        return False
 class ConfRoomSchedulerSemanticChecker(ConfRoomSchedulerListener):
+    def __init__(self):
+        self.reservations = []
+        
     def enterReserveStat(self, ctx):
         
+        dates = self.validateDateAndTime(ctx)
         
-        self.validateDateAndTime(ctx)
+        self.validateOverlapReservation(ctx=ctx, dates=dates)
         
         pass
     
@@ -27,9 +43,22 @@ class ConfRoomSchedulerSemanticChecker(ConfRoomSchedulerListener):
                 print(f"Error en reserva {ctx.getChild(0).getText()}: La hora de inicio {start_time_token} debe ser anterior a la hora de fin {end_time_token}.")
             else:
                 print("Reserva válida para la fecha y horas ingresadas.")
+                return [date_obj,start_time_obj, end_time_obj]
         except ValueError as e:
             print(f"Error en reserva {ctx.getChild(0).getText()} con la entrada de fecha o tiempo")
+     
+    def validateOverlapReservation(self, ctx, dates):
+        child = ctx.getChild(0)
+        new_reservation = Reservation(child.ID().getText(), dates[0],dates[1],dates[2])
+        for reservation in self.reservations:
+            if reservation.overlaps_with(new_reservation):
+                print(f"Error: La reserva para el salón {child.getText()} está solapada con otra reserva.")
+                return 
+        self.reservations.append(new_reservation)
+        print(f"Reserva agregada correctamente para el salón {child.getText()}.")
 
+    
+    
 def main():
     input_stream = FileStream(sys.argv[1])
     lexer = ConfRoomSchedulerLexer(input_stream)
