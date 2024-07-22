@@ -28,12 +28,12 @@ class ConfRoomSchedulerSemanticChecker(ConfRoomSchedulerListener):
         self.reservations = []
         
     def enterReserveStat(self, ctx):
-        
-        dates = self.validateDateAndTime(ctx)
-        
-        self.validateOverlapReservation(ctx=ctx, dates=dates)
-        
-        pass
+        try:
+            print("\n")
+            dates = self.validateDateAndTime(ctx)
+            self.validateOverlapReservation(ctx=ctx, dates=dates)
+        except:
+            pass
     
     def validateDateAndTime(self,ctx):
         try:
