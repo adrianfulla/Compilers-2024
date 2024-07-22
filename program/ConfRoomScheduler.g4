@@ -7,10 +7,16 @@ stat: reserve NEWLINE                # reserveStat
     | NEWLINE                        # blank
     ;
 
-reserve: 'RESERVAR' ID 'PARA' DATE 'DE' TIME 'A' TIME ('POR' NAME)? ('DESCRIPCION' DESCRIPTION)?
+reserve: 'RESERVAR' ID 'PARA' DATE 'DE' TIME 'A' TIME ('POR' NAME)? ('COMO' type)? ('DESCRIPCION' DESCRIPTION)?
         ; 
 
 cancel: 'CANCELAR' ID 'PARA' DATE 'DE' TIME 'A' TIME ; 
+
+type:   'JUNTAS' 
+    |   'CAPACITACION'
+    |   'AUDITORIO'
+    |   'CONVENCION'
+    ;
 
 DATE: DIGIT DIGIT '/' DIGIT DIGIT '/' DIGIT DIGIT DIGIT DIGIT ; 
 TIME: DIGIT DIGIT ':' DIGIT DIGIT ;
